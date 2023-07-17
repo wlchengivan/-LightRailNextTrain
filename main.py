@@ -27,7 +27,9 @@ for x in range(12, 13):
     platformList = req.json()['platform_list']
 
     print(nameChi)
-
+    print(platformList)
+    
+    """
     for y in range(0, len(platformList)):
         try:
             print(str(platformList[y]['platform_id']) + "號月台")
@@ -37,3 +39,5 @@ for x in range(12, 13):
                 print(route['route_no'] + " " + route['dest_ch'] + " " + route['time_ch'])
         except:
             print(platformList[y]['end_service_status'])
+    """
+            
