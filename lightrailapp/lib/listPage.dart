@@ -15,6 +15,7 @@ class listPage extends StatefulWidget {
 
 class _listPageState extends State<listPage> {
   List<List<dynamic>> _data = [];
+  
 
   void _loadCSV() async {
     final _rawData = await rootBundle.loadString("assets/data/NewStation.csv");
@@ -23,8 +24,11 @@ class _listPageState extends State<listPage> {
     setState(() {
       _listData.removeAt(0);
       _data = _listData;
-    });
+      }
+    );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +49,7 @@ class _listPageState extends State<listPage> {
                 dense: true,
                 trailing: const Icon(Icons.keyboard_arrow_right),
                 onTap: () {
-                  final station = new Station(
-                      _data[index][0].toString(),
-                      _data[index][1].toString(),
-                      _data[index][2].toString(),
-                      _data[index][3].toString());
+                  final station = new Station(_data[index][0].toString(),  _data[index][1].toString(), _data[index][2].toString(), _data[index][3].toString());
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -63,4 +63,6 @@ class _listPageState extends State<listPage> {
       // Display the contents from the CSV file
     );
   }
+
+  
 }
