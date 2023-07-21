@@ -15,29 +15,108 @@ class listPage extends StatefulWidget {
 
 class _listPageState extends State<listPage> {
   List<List<dynamic>> _data = [];
-  
+  List<List<dynamic>> _listData = [];
 
   void _loadCSV() async {
     final _rawData = await rootBundle.loadString("assets/data/NewStation.csv");
-    List<List<dynamic>> _listData =
-        const CsvToListConverter().convert(_rawData);
-    setState(() {
-      _listData.removeAt(0);
+    _listData = const CsvToListConverter().convert(_rawData);
+
+    _listData.removeAt(0);
+    _data = _listData;
+  }
+
+  @override
+  void initState() {
+    _data = _listData;
+    super.initState();
+    allResults();
+  }
+
+  void filterSearchResults(String query) {
+    final duplicateItems = _data;
+    _data = _listData;
+
+    if(query.isEmpty){
       _data = _listData;
-      }
-    );
+    }else{
+      _data = duplicateItems.where((item) => item[3].contains(query.toLowerCase())).toList();
+    }
+    setState(() {
+      _data;
+    });
+  }
+
+  void allResults() async{
+    _data = _listData;
+    await Future.delayed(Duration(seconds: 0));
+    setState(() {
+      _data;
+    });
   }
 
 
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController editingController = TextEditingController();
     _loadCSV();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Station"),
       ),
-      body: ListView.builder(
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (value) {
+                  filterSearchResults(value);
+                },
+                keyboardType: TextInputType.text,
+                autofocus: false,
+                decoration: InputDecoration(
+                    labelText: "Search",
+                    hintText: "Search",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _data.length,
+                itemBuilder: (_, index) {
+                  return Card(
+                    margin: const EdgeInsets.all(3),
+                    child: ListTile(
+                        //leading: Text(_data[index][1].toString()),
+                        title: Text(_data[index][3].toString()),
+                        subtitle: Text(_data[index][2].toString()),
+                        dense: true,
+                        trailing: const Icon(Icons.keyboard_arrow_right),
+                        onTap: () {
+                          final station = new Station(_data[index][0].toString(),  _data[index][1].toString(), _data[index][2].toString(), _data[index][3].toString());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => carPage(station: station),
+                            ),
+                          );
+                        }),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+      /*
+      ListView.builder(
         itemCount: _data.length,
         itemBuilder: (_, index) {
           return Card(
@@ -59,10 +138,4 @@ class _listPageState extends State<listPage> {
                 }),
           );
         },
-      ),
-      // Display the contents from the CSV file
-    );
-  }
-
-  
-}
+      ),*/

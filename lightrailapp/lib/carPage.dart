@@ -60,7 +60,7 @@ class _carPageState extends State<carPage> {
                       to = " ";
                     }
 
-                    if(carList['time_ch'] == "即將抵達" && carList['time_ch'] == "正在離開"){
+                    if(carList['time_ch'] == "即將抵達" || carList['time_ch'] == "正在離開"){
                       datail += ("路線 " + carList['route_no'] + to + carList['dest_ch'] + " " + carList['time_ch'] + "\n");
                     }else if(carList['time_ch'] =="-"){
                       datail += ("路線 " + carList['route_no'] + to + carList['dest_ch'] + " 已到站\n");
