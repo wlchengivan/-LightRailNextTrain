@@ -27,14 +27,12 @@ class _listPageState extends State<listPage> {
 
   @override
   void initState() {
-    _data = _listData;
     super.initState();
     allResults();
   }
 
   void filterSearchResults(String query) {
     final duplicateItems = _data;
-    _data = _listData;
 
     if(query.isEmpty){
       _data = _listData;
@@ -47,7 +45,6 @@ class _listPageState extends State<listPage> {
   }
 
   void allResults() async{
-    _data = _listData;
     await Future.delayed(Duration(seconds: 0));
     setState(() {
       _data;
@@ -86,17 +83,21 @@ class _listPageState extends State<listPage> {
             Expanded(
               child: ListView.builder(
                 itemCount: _data.length,
-                itemBuilder: (_, index) {
+                itemBuilder: (context, index) {
+                  var stationIndex = _data[index][0].toString();
+                  var stationID = _data[index][1].toString();
+                  var engName = _data[index][2].toString();
+                  var chiName = _data[index][3].toString();
                   return Card(
                     margin: const EdgeInsets.all(3),
                     child: ListTile(
                         //leading: Text(_data[index][1].toString()),
-                        title: Text(_data[index][3].toString()),
-                        subtitle: Text(_data[index][2].toString()),
+                        title: Text(chiName),
+                        subtitle: Text(engName),
                         dense: true,
                         trailing: const Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          final station = new Station(_data[index][0].toString(),  _data[index][1].toString(), _data[index][2].toString(), _data[index][3].toString());
+                          final station = new Station(stationIndex,  stationID, engName, chiName);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
