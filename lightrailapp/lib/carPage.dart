@@ -54,19 +54,22 @@ class _carPageState extends State<carPage> {
                 for (int x = 0; x < platformList['platform_list'].length; x++) {
                   datail += (platformList['platform_list'][x]['platform_id'].toString() + "號月台\n");
                   for (int y = 0; y < platformList['platform_list'][x]['route_list'].length; y++){
-                    var carList = platformList['platform_list'][x]['route_list'][y];
-                    String to = " 往 ";
-                    if(carList['dest_ch'].length > 4){
-                      to = " ";
-                    }
+                    if(platformList['platform_list'][x]['route_list'][y].length>3){
+                      var carList = platformList['platform_list'][x]['route_list'][y];
+                      String to = " 往 ";
+                      print(carList['dest_ch']);
+                      if(carList['dest_ch'].length > 4){
+                        to = " ";
+                      }
 
-                    if(carList['time_ch'] == "即將抵達" || carList['time_ch'] == "正在離開"){
-                      datail += ("路線 " + carList['route_no'] + to + carList['dest_ch'] + " " + carList['time_ch'] + "\n");
-                    }else if(carList['time_ch'] =="-"){
-                      datail += ("路線 " + carList['route_no'] + to + carList['dest_ch'] + " 已到站\n");
-                    }else
-                    {
-                      datail += ("路線 " + carList['route_no'] + to + carList['dest_ch'] + " 將於 " + carList['time_ch'] + " 到達\n");
+                      if(carList['time_ch'] == "即將抵達" || carList['time_ch'] == "正在離開"){
+                        datail += ("路線 " + carList['route_no'] + to + carList['dest_ch'] + " " + carList['time_ch'] + "\n");
+                      }else if(carList['time_ch'] =="-"){
+                        datail += ("路線 " + carList['route_no'] + to + carList['dest_ch'] + " 已到站\n");
+                      }else
+                      {
+                        datail += ("路線 " + carList['route_no'] + to + carList['dest_ch'] + " 將於 " + carList['time_ch'] + " 到達\n");
+                      }
                     }
                   }
                 }
